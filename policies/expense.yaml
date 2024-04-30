@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/Policy.schema.json
+apiVersion: api.cerbos.dev/v1
+resourcePolicy:
+  version: "default"
+  resource: "expense"
+  rules:
+    - actions: ['CREATE', 'READ', 'DELETE']
+      effect: EFFECT_ALLOW
+      roles:
+        - ADMIN        
+
+    - actions: ['READ']
+      effect: EFFECT_ALLOW
+      roles:
+        - USER
+      condition:
+        match:
+          expr: request.resource.attr.ownerId == request.principal.id
+
+    - actions: ['READ']
+      effect: EFFECT_ALLOW
+      roles:
+        - MANAGER
+      condition:
+        match:
+          expr: request.resource.attr.region == request.principal.attr.region
