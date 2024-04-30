@@ -4,12 +4,12 @@ resourcePolicy:
   version: "default"
   resource: "expense"
   rules:
-    - actions: ['CREATE', 'READ', 'DELETE']
+    - actions: ["CREATE", "READ", "DELETE"]
       effect: EFFECT_ALLOW
       roles:
-        - ADMIN        
+        - ADMIN
 
-    - actions: ['READ']
+    - actions: ["READ"]
       effect: EFFECT_ALLOW
       roles:
         - USER
@@ -17,10 +17,7 @@ resourcePolicy:
         match:
           expr: request.resource.attr.ownerId == request.principal.id
 
-    - actions: ['READ']
+    - actions: ["READ"]
       effect: EFFECT_ALLOW
       roles:
         - MANAGER
-      condition:
-        match:
-          expr: request.resource.attr.region == request.principal.attr.region
