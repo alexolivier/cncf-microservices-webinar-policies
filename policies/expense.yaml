@@ -21,6 +21,6 @@ resourcePolicy:
       effect: EFFECT_ALLOW
       roles:
         - MANAGER
-      condition:
-        match:
-          expr: request.resource.attr.region == request.principal.attr.region
+      # condition:
+      #   match:
+      #     expr: request.resource.attr.region == request.principal.attr.region
