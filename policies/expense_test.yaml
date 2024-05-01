@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://api.cerbos.dev/latest/cerbos/policy/v1/TestSuite.schema.json
+---
+name: ExpenesesTestSuite
+description: Tests for verifying the expense resource policy
+
+principals:
+  admin:
+    id: admin
+    roles:
+      - ADMIN
+
+  managerNA:
+    id: managerNA
+    roles:
+      - MANAGER
+    attr:
+      region: NA
+
+  managerEMEA:
+    id: managerEMEA
+    roles:
+      - MANAGER
+    attr:
+      region: EMEA
+
+resources:
+  expenseNA:
+    kind: expense
+    id: expenseNA
+    attr:
+      region: NA
+
+  expenseEMEA:
+    kind: expense
+    id: expenseEMEA
+    attr:
+      region: EMEA
+
+tests:
+  - name: Expense read action
+    input:
+      principals:
+        - admin
+        - managerNA
+        - managerEMEA
+
+      resources:
+        - expenseNA
+        - expenseEMEA
+
+      actions:
+        - READ
+    expected:
+      - principal: admin
+        resource: expenseNA
+        actions:
+          READ: EFFECT_ALLOW
+
+      - principal: admin
+        resource: expenseEMEA
+        actions:
+          READ: EFFECT_ALLOW
+
+      - principal: managerNA
+        resource: expenseNA
+        actions:
+          READ: EFFECT_ALLOW
+
+      - principal: managerNA
+        resource: expenseEMEA
+        actions:
+          READ: EFFECT_DENY
+
+      - principal: managerEMEA
+        resource: expenseEMEA
+        actions:
+          READ: EFFECT_ALLOW
+
+      - principal: managerEMEA
+        resource: expenseNA
+        actions:
+          READ: EFFECT_DENY
